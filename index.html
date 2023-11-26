@@ -2,32 +2,56 @@
 <html lang="en" manifest="offlinedatabase.manifest">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="build.css">
-    <title>LME Online Transplante</title>
-    <script src="bundle.min.js"></script>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GVH660EEKT"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-GVH660EEKT');
-</script>
- 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../dist/build.css">
+    <title>Document</title>
+    <!--script src="../../dist/bundle.min.js" /-->
+    
+    <script src="../js/DBF.js"></script>
+    <script src="../js/base64.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/functions.js"></script>
+    <script src="../js/grid_patients.js"></script>
+    <script src="../js/logica.js"></script>
+    <script src="../js/nomePaciente.js"></script>
+    <script src="../js/tx-renal.js"></script>
+    <script src="../js/pdfmake.min.js"></script>
+    <script src="../js/vfs_fonts.js"></script>
+    <script src="../js/schema.js"></script>
+    <script src="../js/modal.js"></script>
     
 </head>
 
 
 <body onload="leitura()" class="bg-indigo-100">
+        
+    <!-- Camada de fundo semitransparente -->
+    <div id="backgroundOverlay" class="absolute inset-0 bg-black opacity-50 z-40 hidden"></div>
+    
+    <div id="myModal" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 hidden">
+        <div class="modal-content bg-white p-8 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold mb-4">Selecione e Atualize Medicamento</h2>
+            <select onchange="atualizarInputs()" id="medicamentosSelect" class="border p-2 mb-4">
+            </select>
+            <br>
+            <label for="newName" class="block text-sm font-medium text-gray-700">Novo nome:</label>
+            <input type="text" id="newName" class="border p-2 mb-4 w-full">
+            <br>
+            <label for="newQtd" class="block text-sm font-medium text-gray-700">Nova Quantidade:</label>
+            <input type="text" id="newQtd" class="border p-2 mb-4 w-full">
+            <br>
+            <label for="newPosologia" class="block text-sm font-medium text-gray-700">Nova Posologia:</label>
+            <input type="text" id="newPosologia" class="border p-2 mb-4 w-full">
+            <br>
+            <button onclick="atualizarMedicamento()" class="bg-blue-500 text-white py-2 px-4 rounded">Atualizar</button>
+            <button onclick="fecharModal()" class="bg-gray-400 text-white py-2 px-4 rounded">Fechar</button>
+        </div>
+    </div>
 
     <div id="master">
+        
 
         <div>
-            
-            
-
             <div id="btns-c" class="flex flex-wrap place-content-center mx-auto lg-min-h-screen rounded-lg bg-white overflow-hidden p-1 m-2 mt-0">
                 <button onclick="start_grid_patients()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded">Histórico</button>
                 <button onclick="registrarPrescritor()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded">Add Prescritor</button>
@@ -47,9 +71,10 @@
                         <select onchange="findPaciente(this.value)" id="nomePaciente" class="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline" placeholder="Nome do paciente">
                             <option value="">Selecione o paciente</option>
                         </select>
-                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                        <div id="iconClass" class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                             <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
                         </div>
+
             
                     </div> 
                 </div>
@@ -110,7 +135,7 @@
                         <label for="medico">Responsável</label>
                         <div class="relative inline-block w-full text-gray-700">
                             
-                            <select onchange="javascript:configurarCNSdoMedico(this.value)" name="" id="medico" class="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
+                            <select onchange="javascript:configurarCNSdoMedico(this.options[this.selectedIndex].label)" name="" id="medico" class="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
         
                             </select>
                             <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
@@ -139,16 +164,6 @@
 
     
 </body>
-
-<script>
-    onInit();
-
-    var usuario = '--'
-
-    
-    
-
-</script>
 
 
 </html>
